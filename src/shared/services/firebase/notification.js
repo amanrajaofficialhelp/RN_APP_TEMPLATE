@@ -1,6 +1,5 @@
 import { getApp } from '@react-native-firebase/app'
 import { getInitialNotification, getMessaging, getToken, onMessage, onNotificationOpenedApp, setBackgroundMessageHandler } from '@react-native-firebase/messaging'
-import { createNotification } from '../notifee/notifee'
 import notificationPermission from '../permissions/notificationPermission'
 
 const app = getApp()

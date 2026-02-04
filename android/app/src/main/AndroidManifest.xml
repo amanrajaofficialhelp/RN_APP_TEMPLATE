@@ -1,5 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-permission android:name="android.permission.INTERNET" />
+  <!-- <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> -->
+
+  <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
+
+  <!-- <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> -->
+
 
   <application
     android:name=".MainApplication"
@@ -10,6 +18,15 @@
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="${usesCleartextTraffic}"
     android:supportsRtl="true">
+
+    <!-- <service
+      android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask"
+      android:exported="false"
+      android:foregroundServiceType="dataSync|location" /> -->
+
+    <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="[GCP_API_KEY]" /> -->
+
+
     <activity
       android:name=".MainActivity"
       android:label="${APP_NAME}"
@@ -22,6 +39,18 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+
+      <!-- <intent-filter android:label="filter_react_native" android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            
+            <data android:scheme="rebuPartner" />
+            <data android:scheme="rebuPartner" android:host="open" />
+
+            <data android:scheme="https" android:host="rebuPartner.com" android:pathPrefix="/open" />
+        </intent-filter> -->
+
     </activity>
   </application>
 </manifest>
