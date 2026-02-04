@@ -1,0 +1,20 @@
+const COLORS = {
+    PRIMARY: '#2D1F47',
+    SECONDARY: '#E2127A',
+
+    WHITE: '#FFFFFF',
+    BLACK: '#000000',
+
+    GRADIENT_START: '#0F1014',
+    GRADIENT_END: '#2D1F47',
+
+    BACKGROUND: '#0F1014',
+    SURFACE: '#1C1D21',
+
+    GREY: '#8F98B2',
+    BORDER: '#2C2D32',
+
+    HOTSTAR_BLUE: '#0084FF',
+}
+
+export default COLORS

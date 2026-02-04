@@ -2,6 +2,68 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// env file config 
+project.ext.envConfigFiles = [
+    debug: ".env",
+    release: ".env.production",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+
+// auto version upgrade config 
+def versionPropsFile = file("version.properties")
+def versionProps = new Properties()
+
+// Load or initialize version.properties
+if (versionPropsFile.exists()) {
+    versionProps.load(versionPropsFile.newInputStream())
+} else {
+    versionProps["VERSION_CODE"] = "1"
+    versionProps["VERSION_NAME"] = "0.0.1"
+}
+
+// Convert to proper types
+def versionCode = versionProps["VERSION_CODE"].toInteger()
+def versionName = versionProps["VERSION_NAME"]
+
+task incrementVersion {
+    doLast {
+        // Increment version code
+        versionCode++
+        versionProps["VERSION_CODE"] = versionCode.toString()
+
+        // Parse semantic version
+        def (major, minor, patch) = versionName.split("\\.").collect { it.toInteger() }
+
+        // Increment patch, auto-rollover
+        patch++
+        if (patch > 9) {
+            patch = 0
+            minor++
+            if (minor > 9) {
+                minor = 0
+                major++
+            }
+        }
+
+        versionName = "${major}.${minor}.${patch}"
+        versionProps["VERSION_NAME"] = versionName
+
+        // Save updated version.properties
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        println "Updated Version -> Code: ${versionCode}, Name: ${versionName}"
+    }
+}
+
+// Trigger increment when bundling release
+tasks.whenTaskAdded { task ->
+    if (task.name == "bundleRelease") {
+        task.dependsOn incrementVersion
+    }
+}
+
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -57,7 +119,7 @@ react {
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -83,7 +145,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
     }
     signingConfigs {
         debug {
@@ -92,17 +154,44 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+    splits {
+        abi {
+            reset()
+            enable true
+            universalApk false
+            include "arm64-v8a" // "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            buildConfigField "String", "APP_NAME", "\"${project.env.get("APP_NAME")}\""
+            manifestPlaceholders = [
+                APP_NAME: project.env.get("APP_NAME"),
+                usesCleartextTraffic: "true"
+            ]
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
+            shrinkResources enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField "String", "APP_NAME", "\"${project.env.get("APP_NAME")}\""
+            manifestPlaceholders = [
+                APP_NAME: project.env.get("APP_NAME"),
+                usesCleartextTraffic: "false"
+            ]
         }
     }
 }
