@@ -1,18 +1,22 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
-import Config from 'react-native-config'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MainView from '../../../shared/components/layout/MainView'
-import { SVG } from '../../../shared/constant'
 
 const LoginScreen = ({ navigation }) => {
     const safeAreaInsets = useSafeAreaInsets()
+    const styles = createStyles(safeAreaInsets)
+
+    async function sendOtpApi() {
+        navigation.navigate('Otp')
+    }
+
     return (
         <MainView topSafe={true}>
-            <View style={{ flex: 1, paddingBottom: safeAreaInsets.bottom }}>
-                <Text>LoginScreen</Text>
-                <SVG.GoogleIcon width={50} height={50} />
-                <Text>{Config.APP_MODE}</Text>
-                <Button title="Send OTP" onPress={() => navigation.navigate('Otp')} />
+            <View style={styles.container}>
+
+                <Text>Login</Text>
+
+                <Button title="Send OTP" onPress={sendOtpApi} />
             </View>
         </MainView>
     )
@@ -20,4 +24,27 @@ const LoginScreen = ({ navigation }) => {
 
 export default LoginScreen
 
-const styles = StyleSheet.create({})
+const createStyles = (safeAreaInsets) => StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingBottom: safeAreaInsets.bottom,
+    },
+    skeletonWrapper: {
+        width: '100%',
+        flex: 1,
+        marginTop: 10,
+    },
+    row: {
+        width: '100%',
+        paddingVertical: 6,
+    },
+    normalText: {
+        fontSize: 16,
+        color: 'black',
+    },
+    bigText: {
+        fontSize: 24,
+        color: 'black',
+    },
+})
