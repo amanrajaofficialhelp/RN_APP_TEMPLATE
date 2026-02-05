@@ -6,8 +6,10 @@ import RNBootSplash from 'react-native-bootsplash'
 import Config from 'react-native-config'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
+
 import AuthNavigator from '../navigation/AuthNavigator'
 import MainNavigator from '../navigation/MainNavigator'
+import CustomToast from '../shared/components/toast/CustomToast'
 import { checkAppUpdate } from '../shared/services/inappupdate/appUpdate'
 import { companyData } from '../store/slices/companySlice'
 
@@ -62,6 +64,7 @@ const Navigator = () => {
         <GestureHandlerRootView>
             <BottomSheetModalProvider>
                 <NavigationContainer>
+                    <CustomToast />
                     {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
                 </NavigationContainer>
             </BottomSheetModalProvider>
