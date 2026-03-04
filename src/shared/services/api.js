@@ -1,9 +1,8 @@
 import NetInfo from '@react-native-community/netinfo'
 import axios from 'axios'
 import Config from 'react-native-config'
-
-import { getSecureItem } from './storage/keychain'
 import store from '../../store/store'
+import { getSecureItem } from './storage/keychain'
 
 const api = axios.create({
     baseURL: Config.API_URL,
@@ -13,16 +12,13 @@ const api = axios.create({
     }
 })
 
-
 api.interceptors.request.use(
     async config => {
         const state = await NetInfo.fetch()
         const isOnline = state.isConnected && state.isInternetReachable
         if (!isOnline) throw { message: 'No internet available' }
 
-
         const secureData = await getSecureItem({ service: 'ACCESS_TOKEN' })
-        console.log('SECURE DATA : ', secureData)
         if (secureData?.value) {
             config.headers.Authorization = `Bearer ${secureData.value}`
         }
@@ -43,11 +39,11 @@ api.interceptors.response.use(
         if (response?.data?.cache) {
             // store.dispatch(setCacheData(response.data.cache))
         }
-        console.log('API INTERCEPTORS RESPONSE : ', response)
+        // console.log('API INTERCEPTORS RESPONSE : ', response)
         return response
     },
     error => {
-        console.log('API INTERCEPTORS ERROR : ', error)
+        // console.log('API INTERCEPTORS ERROR : ', error)
         let errorMessage
 
         const state = store.getState()
@@ -75,7 +71,6 @@ export const getApi = async (endpoint, params) => {
         throw error
     }
 }
-
 
 export const postApi = async (endpoint, data) => {
     try {

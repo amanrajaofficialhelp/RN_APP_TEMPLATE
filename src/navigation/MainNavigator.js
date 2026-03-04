@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { StyleSheet } from 'react-native'
 import ProfileScreen from '../modules/profile/screens/ProfileScreen'
 import TabNavigator from './TabNavigator'
 
@@ -17,5 +16,3 @@ const MainNavigator = () => {
 }
 
 export default MainNavigator
-
-const styles = StyleSheet.create({})

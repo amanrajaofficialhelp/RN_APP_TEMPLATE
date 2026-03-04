@@ -36,8 +36,6 @@ export const verifyOtp = createAsyncThunk(
 const initialState = {
     isAuthenticated: false,
     loading: false,
-    error: null,
-    otpSent: false,
 };
 
 const authSlice = createSlice({
@@ -47,13 +45,9 @@ const authSlice = createSlice({
         setAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
         },
-        logout: (state) => {
-            state.isAuthenticated = false;
-        },
         resetAuthState: (state) => {
+            state.isAuthenticated = false;
             state.loading = false;
-            state.error = null;
-            state.otpSent = false;
         }
     },
 
@@ -61,33 +55,25 @@ const authSlice = createSlice({
         builder
             .addCase(loginUser.pending, (state) => {
                 state.loading = true;
-                state.error = null;
             })
             .addCase(loginUser.fulfilled, (state) => {
                 state.loading = false;
-                state.otpSent = true;
             })
-            .addCase(loginUser.rejected, (state, action) => {
+            .addCase(loginUser.rejected, (state) => {
                 state.loading = false;
-                state.error = action.payload;
             })
             .addCase(verifyOtp.pending, (state) => {
                 state.loading = true;
-                state.error = null;
             })
             .addCase(verifyOtp.fulfilled, (state) => {
                 state.loading = false;
                 state.isAuthenticated = true;
-                state.error = null;
             })
-            .addCase(verifyOtp.rejected, (state, action) => {
+            .addCase(verifyOtp.rejected, (state) => {
                 state.loading = false;
-                state.error = action.payload;
             });
     },
 });
 
-
-export const { logout, resetAuthState, setAuthenticated } = authSlice.actions;
+export const { resetAuthState, setAuthenticated } = authSlice.actions;
 export default authSlice.reducer;
-

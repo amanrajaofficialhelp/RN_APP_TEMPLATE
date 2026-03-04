@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Home } from 'lucide-react-native'
-import { StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import HomeScreen from '../modules/home/screens/HomeScreen'
 import { COLORS, FONTS, RF } from '../shared/constant'
@@ -12,7 +11,7 @@ const TabNavigator = () => {
         <Tab.Navigator initialRouteName='Home' screenOptions={{
             headerShown: false,
             tabBarStyle: {
-                backgroundColor: COLORS.BACKGROUND,
+                backgroundColor: COLORS.WHITE,
                 borderTopWidth: 0,
                 height: Platform.OS === 'ios' ? RF(60) + insets.bottom : RF(60) + insets.bottom,
                 paddingTop: RF(5),
@@ -36,5 +35,3 @@ const TabNavigator = () => {
 }
 
 export default TabNavigator
-
-const styles = StyleSheet.create({})
