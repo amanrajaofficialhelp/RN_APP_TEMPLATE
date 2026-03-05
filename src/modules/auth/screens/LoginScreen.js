@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
             navigation.navigate('Otp')
         } catch (error) {
             console.log('Login screen error --->', error)
-            showToast('error', error)
+            // showToast('error', error)
             navigation.navigate('Otp')
         }
     }

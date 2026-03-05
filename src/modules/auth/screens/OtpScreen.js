@@ -31,7 +31,7 @@ const OtpScreen = ({ navigation }) => {
             console.log('Otp screen response ---> ', response)
         } catch (error) {
             console.log('Otp screen error --->', error)
-            showToast('error', error)
+            // showToast('error', error)
             dispatch(setAuthenticated(true))
         }
     }

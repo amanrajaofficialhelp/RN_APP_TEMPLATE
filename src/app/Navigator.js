@@ -26,7 +26,7 @@ const Navigator = () => {
                 // handleAppUpdate(UPDATE_CONDITION)
             }
         } catch (error) {
-            console.log('Error fetching company data : ', error)
+            // console.log('Error fetching company data : ', error)
             // showToast("error", error)
         }
     }
