@@ -12,8 +12,8 @@ import { getCurrentLocation } from '../../../shared/services/geolocation/locatio
 import checkAndEnableLocationServices from '../../../shared/services/permissions/gpsPermission'
 import locationPermission from '../../../shared/services/permissions/locationPermission'
 import notificationPermission from '../../../shared/services/permissions/notificationPermission'
-import { fetchHomeData } from '../store/homeSlice'
 import { requestCameraPermission, requestMicrophonePermission } from '../../../shared/services/permissions/universalPermission'
+import { fetchHomeData } from '../store/homeSlice'
 
 const HomeScreen = ({ navigation }) => {
 
@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const { homeData, loading, refreshing, homeDataLoading } = useSelector(state => state.home)
     const { currentLocation } = useSelector(state => state.location)
-    console.log('User current location ---> ', currentLocation)
+    // console.log('User current location ---> ', currentLocation)
 
     async function fetchData() {
         if (!isOnline) {
@@ -136,5 +136,18 @@ export default HomeScreen
 const createStyles = (safeAreaInsets) => StyleSheet.create({
     container: {
         flex: 1
-    }
+    },
+
+    title: { fontSize: 24, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' },
+    input: {
+        borderWidth: 1, borderColor: '#ddd', borderRadius: 10,
+        padding: 14, fontSize: 16, minHeight: 100,
+        textAlignVertical: 'top', marginBottom: 20,
+    },
+    button: {
+        backgroundColor: '#4F46E5', padding: 16,
+        borderRadius: 12, alignItems: 'center',
+    },
+    buttonActive: { backgroundColor: '#DC2626' },
+    buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
 })
