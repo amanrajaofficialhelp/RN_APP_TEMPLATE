@@ -8,7 +8,12 @@ import CustomHeader from '../../../shared/components/layout/CustomHeader'
 import MainView from '../../../shared/components/layout/MainView'
 import { useNetwork } from '../../../shared/context/NetworkContext'
 import { useToast } from '../../../shared/context/ToastContext'
+import { getCurrentLocation } from '../../../shared/services/geolocation/location'
+import checkAndEnableLocationServices from '../../../shared/services/permissions/gpsPermission'
+import locationPermission from '../../../shared/services/permissions/locationPermission'
+import notificationPermission from '../../../shared/services/permissions/notificationPermission'
 import { fetchHomeData } from '../store/homeSlice'
+import { requestCameraPermission, requestMicrophonePermission } from '../../../shared/services/permissions/universalPermission'
 
 const HomeScreen = ({ navigation }) => {
 
@@ -19,6 +24,8 @@ const HomeScreen = ({ navigation }) => {
 
     const dispatch = useDispatch()
     const { homeData, loading, refreshing, homeDataLoading } = useSelector(state => state.home)
+    const { currentLocation } = useSelector(state => state.location)
+    console.log('User current location ---> ', currentLocation)
 
     async function fetchData() {
         if (!isOnline) {
@@ -30,11 +37,21 @@ const HomeScreen = ({ navigation }) => {
             console.log('Home screen response ---> ', response)
         } catch (error) {
             console.log('Home screen error --->', error)
-            showToast('error', error)
+            // showToast('error', error)
         }
     }
 
+    const handlePermissions = useCallback(async () => {
+        await notificationPermission();
+        await locationPermission(true);
+        await checkAndEnableLocationServices();
+        await getCurrentLocation();
+        await requestCameraPermission();
+        await requestMicrophonePermission();
+    }, []);
+
     useEffect(() => {
+        handlePermissions()
         fetchData()
     }, [isOnline])
 
@@ -83,7 +100,7 @@ const HomeScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <MainView topSafe={true}>
+        <MainView>
             <CustomHeader title="Home" />
 
             <Button
@@ -117,6 +134,7 @@ const HomeScreen = ({ navigation }) => {
 export default HomeScreen
 
 const createStyles = (safeAreaInsets) => StyleSheet.create({
-
-
+    container: {
+        flex: 1
+    }
 })

@@ -2,10 +2,9 @@ import { Button, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import MainView from '../../../shared/components/layout/MainView'
-import { COLORS } from '../../../shared/constant'
 import { useNetwork } from '../../../shared/context/NetworkContext'
 import { useToast } from '../../../shared/context/ToastContext'
-import { loginUser } from '../store/authSlice'
+import { loginUserThunkApi } from '../store/authSlice'
 
 const LoginScreen = ({ navigation }) => {
 
@@ -26,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
             mobile: '1234567890',
         }
         try {
-            const response = await dispatch(loginUser(data)).unwrap();
+            const response = await dispatch(loginUserThunkApi(data)).unwrap();
             console.log('Login screen response ---> ', response)
             navigation.navigate('Otp')
         } catch (error) {
@@ -53,26 +52,11 @@ export default LoginScreen
 const createStyles = (safeAreaInsets) => StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: safeAreaInsets.top,
+        paddingBottom: safeAreaInsets.bottom,
+        paddingLeft: safeAreaInsets.left,
+        paddingRight: safeAreaInsets.right,
+        // backgroundColor: COLORS.WHITE,
         justifyContent: 'space-between',
-        paddingTop: safeAreaInsets.top + 20,
-        paddingBottom: safeAreaInsets.bottom + 20,
-        backgroundColor: COLORS.WHITE
-    },
-    skeletonWrapper: {
-        width: '100%',
-        flex: 1,
-        marginTop: 10,
-    },
-    row: {
-        width: '100%',
-        paddingVertical: 6,
-    },
-    normalText: {
-        fontSize: 16,
-        color: 'black',
-    },
-    bigText: {
-        fontSize: 24,
-        color: 'black',
     },
 })

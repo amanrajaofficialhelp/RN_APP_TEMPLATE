@@ -2,7 +2,16 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '../../constant';
 
-const MainView = ({ children, topSafe = false, bottomSafe = false, rightSafe = true, leftSafe = true, content = 'dark', backgroundColor = COLORS.WHITE }) => {
+const MainView = ({
+    children,
+    topSafe = false,
+    bottomSafe = false,
+    rightSafe = false,
+    leftSafe = false,
+    content = 'dark',
+    backgroundColor = COLORS.WHITE
+}) => {
+
     const safeAreaInsets = useSafeAreaInsets();
 
     const paddingTop = topSafe ? safeAreaInsets.top : 0;
@@ -23,6 +32,5 @@ export default MainView
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.WHITE,
     }
 })

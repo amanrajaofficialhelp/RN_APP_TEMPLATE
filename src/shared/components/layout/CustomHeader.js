@@ -4,9 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 
 import { COLORS, FONTS, TYPOGRAPHY } from '../../constant';
 import { RF } from '../../utils/responsiveFont';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const CustomHeader = ({ title }) => {
+const CustomHeader = ({ title, color = COLORS.BLACK }) => {
     const navigation = useNavigation()
+    const safeAreaInsets = useSafeAreaInsets()
+    const styles = createStyles(safeAreaInsets)
+
     const noBackButton = [
         'Home'
     ]
@@ -14,23 +18,23 @@ const CustomHeader = ({ title }) => {
         <View style={styles.container}>
             {noBackButton.includes(title) ? null : (
                 <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <ChevronLeft size={RF(25)} color={COLORS.BLACK} />
+                    <ChevronLeft size={RF(25)} color={color} />
                 </Pressable>
             )}
-            <Text style={styles.title}>{title}</Text>
+            <Text style={[styles.title, { color }]}>{title}</Text>
         </View>
     )
 }
 
 export default CustomHeader
 
-const styles = StyleSheet.create({
+const createStyles = (safeAreaInsets) => StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: RF(10),
         paddingVertical: RF(8),
-        backgroundColor: COLORS.WHITE,
+        paddingTop: safeAreaInsets.top,
     },
     backButton: {
         width: RF(36),
@@ -40,7 +44,6 @@ const styles = StyleSheet.create({
         borderRadius: RF(18)
     },
     title: {
-        color: COLORS.BLACK,
         fontFamily: FONTS.MEDIUM,
         fontSize: TYPOGRAPHY.h4,
         marginLeft: RF(8)

@@ -6,7 +6,7 @@ import { getSecureItem } from './storage/keychain'
 
 const api = axios.create({
     baseURL: Config.API_URL,
-    timeout: 2 * 1000,
+    timeout: 5 * 1000,
     headers: {
         "Content-Type": 'application/json'
     }

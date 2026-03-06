@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchUserProfile } from '../../profile/store/profileSlice';
+import { profileThunkApi } from '../../profile/store/profileSlice';
 import { getApi } from '../../../shared/services/api';
 
 export const fetchHomeData = createAsyncThunk(
@@ -7,8 +7,8 @@ export const fetchHomeData = createAsyncThunk(
     async (params, { dispatch, rejectWithValue }) => {
         try {
             await Promise.all([
-                dispatch(fetchUserProfile()).unwrap(),
-                dispatch(fetchHomeApiData()).unwrap(),
+                dispatch(profileThunkApi()).unwrap(),
+                dispatch(homeThunkApi()).unwrap(),
             ]);
             return true;
         } catch (error) {
@@ -17,31 +17,37 @@ export const fetchHomeData = createAsyncThunk(
     }
 );
 
-export const fetchHomeApiData = createAsyncThunk(
-    'home/fetchHomeApiData',
+export const homeThunkApi = createAsyncThunk(
+    'home/homeThunkApi',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await getApi('home');
-            console.log('Home thunk response ---> ', response?.data);
-            return response?.data || [];
+            const response = await getApi('home-endpoint');
+            const data = response?.data?.data
+            console.log('Home slice response ---> ', response?.data);
+            return data;
         } catch (error) {
-            console.log('Home thunk error ---> ', error);
+            console.log('Home slice error ---> ', error);
             return rejectWithValue(error);
         }
     }
 );
 
-const initialState = {
-    homeData: [],
-    loading: false,
-    refreshing: false,
-    homeDataLoading: false,
-};
-
 const homeSlice = createSlice({
     name: 'home',
-    initialState,
-    reducers: {},
+    initialState: {
+        homeData: [],
+        loading: false,
+        refreshing: false,
+        homeDataLoading: false,
+    },
+    reducers: {
+        resetHomeState: (state) => {
+            state.homeData = [];
+            state.loading = false;
+            state.refreshing = false;
+            state.homeDataLoading = false;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchHomeData.pending, (state, action) => {
@@ -61,17 +67,18 @@ const homeSlice = createSlice({
                 state.refreshing = false;
             })
 
-            .addCase(fetchHomeApiData.pending, (state) => {
+            .addCase(homeThunkApi.pending, (state) => {
                 state.homeDataLoading = true;
             })
-            .addCase(fetchHomeApiData.fulfilled, (state, action) => {
+            .addCase(homeThunkApi.fulfilled, (state, action) => {
                 state.homeDataLoading = false;
                 state.homeData = action.payload;
             })
-            .addCase(fetchHomeApiData.rejected, (state) => {
+            .addCase(homeThunkApi.rejected, (state) => {
                 state.homeDataLoading = false;
             });
     },
 });
 
+export const { resetHomeState } = homeSlice.actions;
 export default homeSlice.reducer;

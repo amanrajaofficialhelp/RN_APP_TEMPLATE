@@ -1,10 +1,18 @@
 import { StatusBar, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { COLORS } from '../../constant';
 
-const LinearView = ({ children, topSafe = false, bottomSafe = false, rightSafe = true, leftSafe = true, content = 'light' }) => {
+const LinearView = ({
+    children,
+    topSafe = false,
+    bottomSafe = false,
+    rightSafe = false,
+    leftSafe = false,
+    content = 'light',
+    backgroundColor = [COLORS.GRADIENT_START, COLORS.GRADIENT_END]
+}) => {
+
     const safeAreaInsets = useSafeAreaInsets();
 
     const paddingTop = topSafe ? safeAreaInsets.top : 0;
@@ -14,7 +22,7 @@ const LinearView = ({ children, topSafe = false, bottomSafe = false, rightSafe =
 
     return (
         <LinearGradient
-            colors={[COLORS.GRADIENT_START, COLORS.WHITE]}
+            colors={backgroundColor}
             style={[styles.container, { paddingTop, paddingBottom, paddingRight, paddingLeft }]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}

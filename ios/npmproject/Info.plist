@@ -33,8 +33,20 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<!-- ✅ LOCATION PERMISSIONS — add these 3 keys -->
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>We need your location to show nearby services.</string>
+
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location in the background to provide location-based features.</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location in the background to provide location-based features.</string>
+
+	<!-- ✅ NOTIFICATION PERMISSION -->
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>We need permission to send you notifications.</string>
+
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
